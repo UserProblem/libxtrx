@@ -469,13 +469,13 @@ void SoapyXTRX::setSampleRate(const int direction, const size_t channel, const d
 	double master_clock;
 	if (direction == SOAPY_SDR_RX)
 	{
-		_tmp_rx = rate;
+		_tmp_rx = fix_sample_rate(direction, rate, _tmp_tx);
 		if (std::abs(_tmp_rx - _actual_rx_rate) < 10)
 			return;
 	}
 	else if (direction == SOAPY_SDR_TX)
 	{
-		_tmp_tx = rate;
+		_tmp_tx = fix_sample_rate(direction, _tmp_rx, rate);
 		if (std::abs(_tmp_tx - _actual_tx_rate) < 10)
 			return;
 	}
@@ -1264,4 +1264,36 @@ xtrx_channel_t SoapyXTRX::to_xtrx_channels(const size_t channel) const
 		return XTRX_CH_B;
 	else
 		throw std::runtime_error("SoapyXTRX: incorret number of channel provided");
+}
+
+// Calculate a RX/TX rate that will result in a valid RX/TX decimation factor
+double SoapyXTRX::fix_sample_rate(
+			const int direction,
+			const double rx_rate,
+			const double tx_rate) const
+{
+	double factor = (rx_rate > tx_rate)? rx_rate/tx_rate : tx_rate/rx_rate;
+	double target = 1.0;
+
+	while (target < factor)
+		target *= 2.0;
+
+	if (direction == SOAPY_SDR_RX) {
+		if (rx_rate > tx_rate) {
+			return tx_rate*target;
+		}
+		else {
+			return (target == factor)? rx_rate : tx_rate/target*2;
+		}
+	}
+	else if (direction == SOAPY_SDR_TX) {
+		if (tx_rate > rx_rate) {
+			return rx_rate*target;
+		}
+		else {
+			return (target == factor)? tx_rate : rx_rate/target*2;
+		}
+	}
+
+	return 0.0;
 }
