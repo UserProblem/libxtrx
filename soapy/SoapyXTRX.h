@@ -277,6 +277,7 @@ public:
 
 private:
 	xtrx_channel_t to_xtrx_channels(const size_t channel) const;
+    double fix_sample_rate(const int direction, const double rx_rate, const double tx_rate) const;
 
 private:
 	enum { MAX_CHANNELS = 2 };
