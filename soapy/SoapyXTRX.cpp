@@ -1101,7 +1101,7 @@ int SoapyXTRX::activateStream(
 		if (flags & SOAPY_SDR_HAS_TIME) {
 			_stream_params.rx_stream_start = (master_ts)SoapySDR::timeNsToTicks(timeNs, _actual_rx_rate);
 		} else {
-			_stream_params.rx_stream_start = 4096;
+			_stream_params.rx_stream_start = 4096*8;
 		}
 		_stream_params.rx.paketsize = (uint16_t)numElems;
 		_stream_params.dir = XTRX_RX;
@@ -1119,7 +1119,7 @@ int SoapyXTRX::activateStream(
 		if (flags & SOAPY_SDR_HAS_TIME) {
 			_tx_internal = SoapySDR::timeNsToTicks(timeNs, _actual_tx_rate);
 		} else {
-			_tx_internal = 4096*1024;
+			_tx_internal = 4096*8;
 		}
 	} else {
 		throw std::runtime_error("SoapyXTRX::activateStream() - incorrect stream");
