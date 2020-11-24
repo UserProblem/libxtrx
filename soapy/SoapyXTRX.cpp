@@ -1272,8 +1272,25 @@ double SoapyXTRX::fix_sample_rate(
 			const double rx_rate,
 			const double tx_rate) const
 {
-	double factor = (rx_rate > tx_rate)? rx_rate/tx_rate : tx_rate/rx_rate;
+	if (direction == SOAPY_SDR_RX && tx_rate == 0.0)
+		return rx_rate;
+
+	if (direction == SOAPY_SDR_TX && rx_rate == 0.0)
+		return tx_rate;
+
+	double factor = 1.0;
 	double target = 1.0;
+
+	if (rx_rate > tx_rate) {
+		if (tx_rate > 0.0) {
+			factor = rx_rate/tx_rate;
+		}
+	}
+	else {
+		if (rx_rate > 0.0) {
+			factor = tx_rate/rx_rate;
+		}
+	}
 
 	while (target < factor)
 		target *= 2.0;
@@ -1297,3 +1314,4 @@ double SoapyXTRX::fix_sample_rate(
 
 	return 0.0;
 }
+
