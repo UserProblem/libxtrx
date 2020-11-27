@@ -153,7 +153,8 @@ set(CPACK_PACKAGE_CONTACT             "http://fairwaves.co/wp/contact-us/")
 set(CPACK_PACKAGE_VERSION             ${LIBVER}-${MAINT_VERSION})
 set(CPACK_DEBIAN_PACKAGE_DEPENDS      "libc6 (>= 2.17), libxtrxll (>= 0.0.1), libxtrxdsp (>= 0.0.1), liblms7002m (>= 0.0.1)")
 if(ENABLE_SOAPY)
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS      "${CPACK_DEBIAN_PACKAGE_DEPENDS}, soapysdr (>= 0.5.2)")
+#	TODO: need a dependency for correct soapy version
+#	set(CPACK_DEBIAN_PACKAGE_DEPENDS      "${CPACK_DEBIAN_PACKAGE_DEPENDS}, soapysdr (>= 0.5.2)")
 endif(ENABLE_SOAPY)
 
 
