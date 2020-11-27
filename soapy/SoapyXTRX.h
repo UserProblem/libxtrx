@@ -321,6 +321,7 @@ private:
 
 	xtrx_run_params_t _stream_params;
 
-	long long _tx_internal;
+	long long _tx_internal; ///< Internal timestamp counter for "streamed" (i.e. non-timestamped) transmit.
+	                        ///< libxtrx only accepts timestamped tx, so we keep the current tx timestamp here.
 };
 
