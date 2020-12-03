@@ -1312,7 +1312,7 @@ int SoapyXTRX::writeStream(
 	xtrx_send_ex_info_t nfo;
 	nfo.buffer_count = _tx_channels;
 	nfo.buffers = buffs;
-	nfo.flags = 0;
+	nfo.flags = XTRX_TX_NO_DISCARD;
 	nfo.samples = toSend;
 	nfo.ts = ts;
 	nfo.timeout = timeoutUs / 1000;
